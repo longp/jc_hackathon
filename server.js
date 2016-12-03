@@ -6,6 +6,13 @@ var path = require('path');
 var mongoose = require('mongoose');
 const PORT = process.env.PORT || 1337
 
+var dotenv = require('dotenv').config({ path: '.env' });
+
+
+var gcloud = require('google-cloud');
+var vision = require('@google-cloud/vision');
+var language = require('@google-cloud/language');
+
 
 
 // Middleware
@@ -21,7 +28,32 @@ app.use(expses({
 app.use("/js", express.static(path.join(__dirname, 'public/js')));
 app.use("/views", express.static(path.join(__dirname, 'views')));
 
+var visionClient = vision({
+  projectId: process.env.GCLOUD_PROJECT,
+  keyFilename: process.env.FILE_PATH
+});
 
+var languageClient = language({
+  projectId: process.env.GCLOUD_PROJECT,
+  keyFilename: process.env.FILE_PATH
+});
+
+var imageText = [];
+
+visionClient.detectText('http://johnlewis.scene7.com/is/image/JohnLewis/231283644?$prod_exlrg$', function(err, text) {
+  if (err) {
+    throw err
+  } else {
+    var text = text.join(" ");
+    languageClient.detectEntities(text, function(err, entities) {
+      if (err) {
+        throw err
+      } else {
+        console.log(entities);
+      }
+    });
+  }
+});
 
 app.get("/", function(req,res){
   res.sendFile(__dirname + "/views/index.html")
