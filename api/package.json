@@ -4,6 +4,8 @@
   "description": "",
   "main": "api.js",
   "dependencies": {
+    "@google-cloud/language": "^0.6.3",
+    "@google-cloud/vision": "^0.6.0",
     "dotenv": "^2.0.0",
     "express": "^4.14.0",
     "gcloud": "^0.37.0",
