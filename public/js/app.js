@@ -1,11 +1,11 @@
 
 angular.module("mainApp", [
-  'ui.router'
+  'ui.router',
 ])
 
 angular.module("mainApp")
 .controller("homeController", function($scope, $http){
-  console.log('buttsweat')
+
 })
 
 
